@@ -1,19 +1,22 @@
+// main function when on page load
 $(document).ready(() => {
-  let lang = navigator.language ? navigator.language : "en";
+  $("#search_button").click(() => {
+    fetchByCityName(inputData(), lang);
+  });
+  let lang = navigator.language || "en";
   fetchData(city, lang);
   checkLocation();
-  console.log(navigator.language);
-  $(document).on("submit", "#search_button", () => {
-    let values = $("#search").val();
-    console.log(values);
-    inputData();
-  });
 });
 
+// reading input to place as a city
 inputData = () => {
-  console.log("submit ok!");
+  let values = $("#search").val();
+  console.log(("values:", values));
+  $("#search").val("");
+  return values;
 };
 
+// get location for automatic query by location
 checkLocation = () => {
   console.log(navigator.geolocation);
   if (navigator.geolocation) {
@@ -26,12 +29,13 @@ checkLocation = () => {
   }
 };
 
-const city = 587081; // keycode for Baku
+const city = 587081; // keycode for Baku (by default)
 
 fetchData = (city, lang) => {
   const units = "metric";
   const key = "1e3ac1ae38ca57ec10bd8dfabf2819f8";
-  const api = `http://api.openweathermap.org/data/2.5/forecast?id=${city}&appid=${key}&units=${units}&lang=${lang}`;
+  const period = "hourly";
+  const api = `http://api.openweathermap.org/data/2.5/forecast?id=${city}&appid=${key}&units=${units}&lang=${lang}&exclude=${period}`;
 
   $.ajax({
     async: true,
@@ -50,21 +54,50 @@ fetchData = (city, lang) => {
 };
 
 renderBoxes = (res) => {
+  console.log(res);
+  $(".container").empty();
   $.each(res.list, (index, day) => {
-    $(".container")
-      .append(
+    if (index % 6 === 0) {
+      $(".container").append(
         `
-        <div class="styled">
-          <p> ${day.dt_txt}</p>
-          <p> ${day.weather[0].description}</p>
-          <p> ${new Date(day.dt).toLocaleTimeString()}</p>
-          <p> Temp ${day.main.temp} ℃ </p>
-          <p> Humidity: ${day.main.humidity}% </p>
-          <p> Pressure: ${day.main.pressure} hPa </p>
-        </div>
+        <ul class="styled" style="list-style-type:none">
+          <li class="city"> ${res.city.name}</li>
+          <li class="date"> ${day.dt_txt.slice(0, 10)}</li>
+          <li><img 
+          src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
+          alt="${day.weather[0].description} icon" /></li>
+          <li class="description"> ${day.weather[0].description}</li>
+          <li class="temp"> <span>Temp</span> ${day.main.temp} ℃ </li>
+          <li class="wind"> <span>Wind speed:</span> ${day.wind.speed} </li>
+          <li class="humidity"> <span>Humidity:</span> ${
+            day.main.humidity
+          }% </li>
+          <li class="hpa"> <span>Pressure: </span>${day.main.pressure} hPa </li>
+        </ul>
         `
-      )
-      .hide()
-      .fadeIn(400);
+      );
+    }
   });
 };
+
+function fetchByCityName(city) {
+  const units = "metric";
+  const key = "1e3ac1ae38ca57ec10bd8dfabf2819f8";
+  const period = "hourly";
+  const api = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}&units=${units}&exclude=${period}`;
+
+  $.ajax({
+    async: true,
+    dataType: "json",
+    method: "GET",
+    url: api,
+    withCredentials: true,
+  })
+    .fail((xhr, status, err) => {
+      console.log(xhr, status, err);
+    })
+    .done((res) => {
+      console.log(res);
+      renderBoxes(res);
+    });
+}
