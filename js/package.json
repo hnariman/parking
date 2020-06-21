@@ -1,0 +1,28 @@
+{
+  "name": "parking",
+  "version": "1.0.0",
+  "description": "Some parking app sample to practice JQuery",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hnariman/parking.git"
+  },
+  "keywords": [
+    "parking",
+    "JQuery",
+    "portfolio",
+    "reservation"
+  ],
+  "author": "Nariman Huseynov",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/hnariman/parking/issues"
+  },
+  "homepage": "https://github.com/hnariman/parking#readme",
+  "dependencies": {
+    "sass": "^1.26.8"
+  }
+}
