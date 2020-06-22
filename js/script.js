@@ -42,7 +42,7 @@ fetchData = (city, lang) => {
   const units = "metric";
   const key = "1e3ac1ae38ca57ec10bd8dfabf2819f8";
   const period = "hourly";
-  const api = `http://api.openweathermap.org/data/2.5/forecast?id=${city}&appid=${key}&units=${units}&lang=${lang}&exclude=${period}`;
+  const api = `https://api.openweathermap.org/data/2.5/forecast?id=${city}&appid=${key}&units=${units}&lang=${lang}&exclude=${period}`;
 
   $.ajax({
     async: true,
@@ -71,7 +71,7 @@ renderBoxes = (res) => {
         <ul class="styled" style="list-style-type:none">
           <li class="date"> ${day.dt_txt.slice(0, 10)}</li>
           <li><img 
-          src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
+          src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
           alt="${day.weather[0].description} icon" /></li>
           <li class="description"> ${day.weather[0].description}</li>
           <li class="temp"> <span>Temp</span> ${day.main.temp} ℃ </li>
@@ -91,7 +91,7 @@ function fetchByCityName(city) {
   const units = "metric";
   const key = "1e3ac1ae38ca57ec10bd8dfabf2819f8";
   const period = "hourly";
-  const api = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}&units=${units}&exclude=${period}`;
+  const api = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}&units=${units}&exclude=${period}`;
 
   $.ajax({
     async: true,
