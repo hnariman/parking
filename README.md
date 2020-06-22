@@ -1,6 +1,8 @@
 # weather2 - 
 ## Just does what it says: shows the weather
 
+https://hnariman.github.io/weather2/
+
 a JQuery + CSS grids version of the same app. Adaptive modern design, fast and user friendly.
 Simply does what it shall, shows weather all around the world.\
 
