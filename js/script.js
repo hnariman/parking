@@ -1,9 +1,16 @@
 // main function when on page load
 $(document).ready(() => {
+  let lang = navigator.language || "en";
+  // fetch weather data on button press
   $("#search_button").click(() => {
     fetchByCityName(inputData(), lang);
   });
-  let lang = navigator.language || "en";
+  // fetch weather data on enter key press in input
+  $("#search").keypress((e) => {
+    if (e.keyCode == 13) {
+      fetchByCityName(inputData(), lang);
+    }
+  });
   fetchData(city, lang);
   checkLocation();
 });
@@ -56,12 +63,12 @@ fetchData = (city, lang) => {
 renderBoxes = (res) => {
   console.log(res);
   $(".container").empty();
+  $(".city").text(`${res.city.name.replace("City", "")}`);
   $.each(res.list, (index, day) => {
     if (index % 6 === 0) {
       $(".container").append(
         `
         <ul class="styled" style="list-style-type:none">
-          <li class="city"> ${res.city.name}</li>
           <li class="date"> ${day.dt_txt.slice(0, 10)}</li>
           <li><img 
           src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
